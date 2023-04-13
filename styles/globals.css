@@ -45,6 +45,7 @@ h3 {
 }
 
 .heading {
+  text-align: center;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 50px;
@@ -81,6 +82,7 @@ h3 {
 .content {
   width: 100%;
   margin: 0 auto;
+  text-align: center;
 }
 
 .form-group {
@@ -182,4 +184,7 @@ h3 {
   .heading p {
     font-size: 1.5rem;
   }
+}
+.page-heading-icon {
+  color: rgb(99, 230, 190);
 }

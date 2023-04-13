@@ -6,19 +6,10 @@ import validator from "validator";
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
   if (req.method === "POST") {
-    const {
-      name,
-      email,
-      password,
-      passwordConfirm,
-      username,
-      dob,
-      about,
-      location,
-      interests,
-    } = req.body;
+    const { name, email, password, username, dob, about, location, interests } =
+      req.body;
 
-    const hashedPassword = bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = {
       name,
       email,
@@ -29,6 +20,8 @@ export default async function handler(req, res) {
       location,
       interests,
     };
+
+    console.log("password", hashedPassword);
 
     const connection = await db.collection("users").insertOne(user);
 
