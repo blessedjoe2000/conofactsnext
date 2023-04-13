@@ -9,6 +9,10 @@ export default async function handler(req, res) {
     const { name, email, password, username, dob, about, location, interests } =
       req.body;
 
+    if (!validator.isEmail(email)) {
+      res.status(422).json({ message: "email not found" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = {
       name,
@@ -18,10 +22,8 @@ export default async function handler(req, res) {
       dob,
       about,
       location,
-      interests,
+      interests: Array.isArray(interests) ? interests : [],
     };
-
-    console.log("password", hashedPassword);
 
     const connection = await db.collection("users").insertOne(user);
 

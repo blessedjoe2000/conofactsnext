@@ -5,11 +5,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignIn } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router"; // Import useRouter
+import { signIn } from "next-auth/react";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const router = useRouter(); // Initialize useRouter
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -18,12 +20,19 @@ function Login() {
         password,
       });
       if (response.status === 200) {
+        // Save the session
+        signIn("credentials", {
+          callbackUrl: "/", // Redirect to the homepage after successful login
+          email,
+          password,
+        });
+
         setEmail("");
         setPassword("");
+        toast.success("user login successful", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
-      toast.success("user login successful", {
-        position: toast.POSITION.TOP_CENTER,
-      });
     } catch (error) {
       console.log(error);
     }

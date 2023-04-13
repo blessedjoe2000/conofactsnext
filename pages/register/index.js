@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressBook } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 function Register() {
   const [name, setName] = useState("");
@@ -15,7 +16,7 @@ function Register() {
   const [dob, setDob] = useState("");
   const [about, setAbout] = useState("");
   const [location, setLocation] = useState("");
-  // const [interest, setInterest] = useState("");
+  const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +31,9 @@ function Register() {
         about,
         location,
       });
+      localStorage.setItem("token", response.data.generateToken);
       if (response.status === 201) {
+        const data = await response.json();
         setName("");
         setEmail("");
         setPassword("");
@@ -39,6 +42,11 @@ function Register() {
         setDob("");
         setAbout("");
         setLocation("");
+        router.push("/interests");
+        localStorage.setItem(
+          "userId",
+          JSON.stringify({ userId: response.data.userId })
+        );
       }
       toast.success("user registered successfully", {
         position: toast.POSITION.TOP_CENTER,
